@@ -115,7 +115,7 @@ body {
     text-align:         center;
 
     background-color:   #67BFEC;
-    border:             var(--frame-width) solid var(--ink-color);
+    border:             var(--button-width) solid var(--ink-color);
     border-radius:      8px;
 
     white-space:        nowrap; /* Keep size, do not squeeze near edge */

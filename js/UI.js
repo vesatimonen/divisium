@@ -224,10 +224,10 @@ function uiBoardSetup(board) {
     /* Walls use whole device pixels */
     globals.frameWidth = uiFrameWidth(globals.cellSize);
 
-    /* Modal uses same line as walls */
+    /* Walls width for CSS */
     document.documentElement.style.setProperty("--frame-width", globals.frameWidth + "px");
 
-    /* Buttons use dottium line width */
+    /* Buttons and modal use dottium line width */
     document.documentElement.style.setProperty("--button-width", uiButtonWidth() + "px");
 
     /* Clear elements in board */
