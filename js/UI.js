@@ -38,13 +38,6 @@ function uiCellRedraw(board, x, y) {
     /* Get DOM element for counter */
     let cell = document.getElementById("cell-" + x + "-" + y);
 
-    /* Set value on board */
-    if (board.values[x][y] != 0) {
-        cell.innerHTML = board.values[x][y];
-    } else {
-        cell.innerHTML = '';
-    }
-
     /* Set background */
     if (board.resolved(x, y)) {
         cell.style.background = "#67BFEC";
@@ -52,6 +45,26 @@ function uiCellRedraw(board, x, y) {
         cell.style.background = "none";
     }
 
+}
+
+
+/* Draw cell digits, empty when zero, same baseline shift as dottium hints */
+function uiValuesDraw(context, board) {
+    const fontYShift = 0.28 * globals.cellSize; /* 0.4 of font size, Oswald digit middle */
+
+    context.font      = (0.7 * globals.cellSize) + "px Oswald, sans-serif";
+    context.fillStyle = INK_COLOR;
+    context.textAlign = "center";
+
+    for (let y = 0; y < board.height; y++) {
+        for (let x = 0; x < board.width; x++) {
+            if (board.values[x][y] == 0) {
+                continue;
+            }
+
+            context.fillText(board.values[x][y], globals.cellSize * (x + 0.5), globals.cellSize * (y + 0.5) + fontYShift);
+        }
+    }
 }
 
 
@@ -68,6 +81,9 @@ function uiElementsRedraw(board) {
     /* Grid 0,0 after margin */
     const margin = uiBoardMargin();
     context.translate(margin, margin);
+
+    /* Draw digits under dots and walls */
+    uiValuesDraw(context, board);
 
     /* Odd width lines move half pixel to sit on whole pixels, dots follow lines */
     context.save();
@@ -113,6 +129,13 @@ function uiElementsRedraw(board) {
     context.stroke();
     context.restore(); /* Back to unshifted grid */
 }
+
+/* Redraw when Oswald is loaded, canvas does not do it itself */
+document.fonts.load("16px Oswald").then(function () {
+    if (globals.game) {
+        uiElementsRedraw(globals.game.board);
+    }
+});
 
 function uiBoardRedraw(board) {
     /* Redraw cell content */
