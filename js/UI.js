@@ -2,7 +2,7 @@
  * Canvas element sizes, part of cell size
  *****************************************************************************/
 const DOT_RADIUS = 0.04; /* Corner dot */
-const WALL_WIDTH = 0.04; /* Room walls */
+const FRAME_WIDTH = 0.04; /* Walls and grid frame */
 
 /*****************************************************************************
  * Redraw buttons
@@ -71,7 +71,7 @@ function uiElementsRedraw(board) {
 
     /* Draw walls */
     context.beginPath();
-    context.lineWidth = WALL_WIDTH * globals.cellSize;
+    context.lineWidth = globals.frameWidth; /* Snapped to device pixels, sharp */
     context.lineCap = "round"; /* Smooth wall ends and corners */
     context.strokeStyle = "#202020";
 
@@ -119,12 +119,26 @@ function uiBoardRedraw(board) {
 
 
 /*****************************************************************************
+ * Frame line width snapped to whole device pixels, at least 1
+ *****************************************************************************/
+function uiFrameWidth(cellSize) {
+    const pixelRatio  = window.devicePixelRatio || 1;
+    const framePixels = Math.max(1, Math.round(FRAME_WIDTH * cellSize * pixelRatio));
+
+    return framePixels / pixelRatio;
+}
+
+
+/*****************************************************************************
  * Setup board elements
  *****************************************************************************/
 function uiBoardSetup(board) {
 
     /* Calculate board grid size */
     globals.cellSize = Math.floor((elements.screen.clientWidth) / globals.boardMaxSize); /* 9 = Maximum board X-size */
+
+    /* Walls use whole device pixels */
+    globals.frameWidth = uiFrameWidth(globals.cellSize);
 
     /* Clear elements in board */
     while (elements.grid.firstChild) {

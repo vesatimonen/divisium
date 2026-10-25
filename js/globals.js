@@ -5,6 +5,7 @@ var globals = {
     game:         undefined,
     boardMaxSize: 9,
     cellSize:     undefined,
+    frameWidth:   undefined, /* Wall line, whole device pixels */
 };
 
 /*****************************************************************************
