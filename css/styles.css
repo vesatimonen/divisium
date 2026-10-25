@@ -95,8 +95,8 @@ body {
 
     border-radius:  4px;
 
-    touch-action:   none; /* Disable all including double-tap zoom */
-    touch-action:   pinch-zoom;
+    touch-action:   none; /* Disable all including double-tap zoom, drag paints walls */
+/*    touch-action:   pinch-zoom; */
 
     font-family:    'Oswald', sans-serif; /* Modal text */
 }

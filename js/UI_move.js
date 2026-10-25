@@ -6,7 +6,8 @@ function uiMovePosition(event) {
     let X, Y;
 
     switch (event.type) {
-        case "click":
+        case "pointerdown":
+        case "pointermove":
             X = event.clientX;
             Y = event.clientY;
             break;
@@ -27,13 +28,121 @@ function uiMovePosition(event) {
 /*****************************************************************************
  * Event handlers
  *****************************************************************************/
-function uiClick(event) {
+/* Wall value being painted, undefined when not painting */
+let paintValue = undefined;
+
+/* Last pointer point while painting, in cells */
+let paintLastX = undefined;
+let paintLastY = undefined;
+
+/* Press point, drag starts after moving this far, in cells */
+const DRAG_THRESHOLD = 0.3;
+let paintStartX = undefined;
+let paintStartY = undefined;
+let paintDragging = false;
+
+/* Paint wall this much before its middle, in cells */
+const PAINT_EARLY = 0.2;
+
+/* Pointer must be this close to wall line, in cells */
+const PAINT_NEAR = 0.3;
+
+/* Paint one inner wall, returns true if changed */
+function uiPaintWall(direction, x, y) {
+    const board = globals.game.board;
+    let value;
+
+    if (direction == "vertical") {
+        /* Frame or off board */
+        if (x <= 0 || x >= board.width || y < 0 || y >= board.height) {
+            return false;
+        }
+        value = board.getVerticalWall(x, y);
+    } else {
+        if (x < 0 || x >= board.width || y <= 0 || y >= board.height) {
+            return false;
+        }
+        value = board.getHorizontalWall(x, y);
+    }
+
+    /* Already painted */
+    if (value == paintValue) {
+        return false;
+    }
+
+    globals.game.makeMove(direction, x, y);
+    return true;
+}
+
+/* Paint point shift, toward where pointer comes from */
+function uiPaintEarly(from, to) {
+    if (to > from) {
+        return -PAINT_EARLY;
+    }
+    return PAINT_EARLY;
+}
+
+/* Paint walls whose paint point pointer crossed near their line */
+function uiPaintWalls(fromX, fromY, toX, toY) {
+    let changed = false;
+
+    /* Sideways part crosses horizontal walls */
+    if (toX != fromX) {
+        const Xmin   = Math.min(fromX, toX);
+        const Xmax   = Math.max(fromX, toX);
+        const Xearly = uiPaintEarly(fromX, toX);
+
+        for (let x = Math.floor(Xmin - 1); x <= Math.ceil(Xmax); x++) {
+            const Xpaint = x + 0.5 + Xearly;
+            if (Xpaint < Xmin || Xpaint > Xmax) {
+                continue;
+            }
+
+            /* Pointer Y where it crossed, nearest line */
+            const Ycross = fromY + (toY - fromY) * (Xpaint - fromX) / (toX - fromX);
+            const Ywall  = Math.round(Ycross);
+            if (Math.abs(Ycross - Ywall) <= PAINT_NEAR && uiPaintWall("horizontal", x, Ywall)) {
+                changed = true;
+            }
+        }
+    }
+
+    /* Up or down part crosses vertical walls */
+    if (toY != fromY) {
+        const Ymin   = Math.min(fromY, toY);
+        const Ymax   = Math.max(fromY, toY);
+        const Yearly = uiPaintEarly(fromY, toY);
+
+        for (let y = Math.floor(Ymin - 1); y <= Math.ceil(Ymax); y++) {
+            const Ypaint = y + 0.5 + Yearly;
+            if (Ypaint < Ymin || Ypaint > Ymax) {
+                continue;
+            }
+
+            /* Pointer X where it crossed, nearest line */
+            const Xcross = fromX + (toX - fromX) * (Ypaint - fromY) / (toY - fromY);
+            const Xwall  = Math.round(Xcross);
+            if (Math.abs(Xcross - Xwall) <= PAINT_NEAR && uiPaintWall("vertical", Xwall, y)) {
+                changed = true;
+            }
+        }
+    }
+
+    return changed;
+}
+
+function uiPointerDown(event) {
     /* Ignore during solve animation or modal */
     if (uiInputBlocked()) {
         return false;
     }
 
-    /* Get clock position */
+    /* Only main button */
+    if (event.button != 0) {
+        return false;
+    }
+
+    /* Get press position */
     const move = uiMovePosition(event);
     const X = move.X;
     const Y = move.Y;
@@ -52,30 +161,85 @@ function uiClick(event) {
         return false;
     }
 
-    /* Direction from wall */
+    /* Toggle wall like a tap, its new value is used for painting */
+    paintValue = undefined;
     const Xdelta = Math.abs(X - Xwall);
     const Ydelta = Math.abs(Y - Ywall);
     if (Xdelta < Ydelta) {
-        if (Ydelta - Xdelta > 0.0) {
-            /* Vertical wall */
-            if (Xwall > 0 && Xwall < globals.game.board.width) {
-                globals.game.makeMove("vertical", Xwall, Ycell);
-                uiRedraw();
-            }
+        /* Vertical wall */
+        if (Xwall > 0 && Xwall < globals.game.board.width) {
+            paintValue = globals.game.makeMove("vertical", Xwall, Ycell);
         }
     } else {
-        if (Xdelta - Ydelta > 0.0) {
-            /* Horizontal wall */
-            if (Ywall > 0 && Ywall < globals.game.board.height) {
-                globals.game.makeMove("horizontal", Xcell, Ywall);
-                uiRedraw();
-            }
+        /* Horizontal wall */
+        if (Ywall > 0 && Ywall < globals.game.board.height) {
+            paintValue = globals.game.makeMove("horizontal", Xcell, Ywall);
         }
+    }
+
+    /* Frame tap, nothing to paint */
+    if (paintValue == undefined) {
+        return false;
+    }
+
+    /* Remember press point for drag threshold */
+    paintStartX = X;
+    paintStartY = Y;
+    paintLastX  = X;
+    paintLastY  = Y;
+    paintDragging = false;
+
+    /* Keep getting moves outside board until release */
+    elements.board.setPointerCapture(event.pointerId);
+
+    uiRedraw();
+}
+
+function uiPointerMove(event) {
+    /* Not painting, solve animation running or modal */
+    if (paintValue == undefined || uiInputBlocked()) {
+        return false;
+    }
+
+    /* Button released where we did not see it, stop painting */
+    if (event.buttons == 0) {
+        paintValue = undefined;
+        return false;
+    }
+
+    const move = uiMovePosition(event);
+
+    /* Small finger slide is not a drag */
+    if (!paintDragging) {
+        if (Math.hypot(move.X - paintStartX, move.Y - paintStartY) < DRAG_THRESHOLD) {
+            return false;
+        }
+        paintDragging = true;
+    }
+
+    /* Paint from last point to this one */
+    const changed = uiPaintWalls(paintLastX, paintLastY, move.X, move.Y);
+    paintLastX = move.X;
+    paintLastY = move.Y;
+
+    if (changed) {
+        uiRedraw();
     }
 }
 
-elements.board.addEventListener("click", uiClick, {passive: true});
+function uiPointerUp(event) {
+    /* Stop painting */
+    paintValue = undefined;
+}
 
+/* Stop iOS magnifier and page scroll on board, modal closes on pointerdown */
+function uiTouchStart(event) {
+    event.preventDefault();
+}
 
-
-
+elements.board.addEventListener("pointerdown",   uiPointerDown);
+elements.board.addEventListener("pointermove",   uiPointerMove);
+elements.board.addEventListener("pointerup",     uiPointerUp);
+elements.board.addEventListener("pointercancel", uiPointerUp);
+elements.board.addEventListener("lostpointercapture", uiPointerUp); /* Release outside window */
+elements.board.addEventListener("touchstart",    uiTouchStart, {passive: false});
