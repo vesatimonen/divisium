@@ -49,10 +49,11 @@ function uiElementsRedraw(board) {
     var context = elements.canvas.getContext('2d');
 
     /* Set canvas size and clear it */
-    const pixelRation = 2.0;
-    elements.canvas.width = elements.grid.clientWidth * pixelRation;
-    elements.canvas.height = elements.grid.clientHeight * pixelRation;
-    context.scale(pixelRation, pixelRation);
+    const pixelRatio = window.devicePixelRatio || 1;
+    const canvasRect = elements.canvas.getBoundingClientRect(); /* Exact size, not rounded */
+    elements.canvas.width  = Math.round(canvasRect.width  * pixelRatio);
+    elements.canvas.height = Math.round(canvasRect.height * pixelRatio);
+    context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
 
     /* Draw dots */
