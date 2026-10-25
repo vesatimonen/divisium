@@ -232,12 +232,6 @@ function uiGridAnimationEnd(event) {
     event.stopPropagation();
     globals.animating = false;
 
-    if (globals.game.level + 1 >= options.challenges.length) {
-        /* Show game over modal */
-        modalShow("Game solved!", "", false);
-        elements.board.style.visibility = "hidden";
-    }
-
     gameStart(globals.game.level + 1); /* Start new level */
     return false;
 }
@@ -252,6 +246,12 @@ function uiRedraw() {
 
     /* Check if end of level */
     if (globals.game.board.solved()) {
+        /* Last level, fade in game over modal, board stays */
+        if (globals.game.level + 1 >= options.challenges.length) {
+            modalShow("Game solved!", "", true); /* Fade in, a bit faster than level change */
+            return;
+        }
+
         /* Start animation to next level, block input and gray buttons */
         globals.animating = true;
         uiButtonsRedraw(globals.game);

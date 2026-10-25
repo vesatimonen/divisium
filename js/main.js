@@ -4329,8 +4329,21 @@ function parseOptions() {
     /* Create URL */
     const url = new URL(newUrl);
 
-    /* Level option */
-    const levelOption = url.searchParams.get("level");
+    /* Set option, short "s" or long "set", before level so storage key is right */
+    let setOption = url.searchParams.get("s");
+    if (setOption == null) {
+        setOption = url.searchParams.get("set");
+    }
+    if (setOption == "debug") {
+        options.challenges = debugChallengeSet;
+        globals.storage    = globals.storage + "-debug";
+    }
+
+    /* Level option, short "l" or long "level" */
+    let levelOption = url.searchParams.get("l");
+    if (levelOption == null) {
+        levelOption = url.searchParams.get("level");
+    }
     if (levelOption == null) {
         /* Read from storage */
         options.level = JSON.parse(localStorage.getItem(globals.storage));
@@ -4338,24 +4351,24 @@ function parseOptions() {
         options.level = Number(levelOption - 1);
     }
 
-    /* Challenge option */
-    const challengeOption = url.searchParams.getAll("challenge");
+    /* Challenge option, short "c" or long "challenge" */
+    let challengeOption = url.searchParams.getAll("c");
     if (challengeOption.length == 0) {
-    } else {
-        if (challengeOption.length > 0) {
-            options.challenges = [];
-            for (let index = 0; index < challengeOption.length; index++) {
-                /* Convert URL special characters */
-                challengeOption[index] = challengeOption[index].replace("%3E",'>');
+        challengeOption = url.searchParams.getAll("challenge");
+    }
+    if (challengeOption.length > 0) {
+        options.challenges = [];
+        for (let index = 0; index < challengeOption.length; index++) {
+            /* Convert URL special characters */
+            challengeOption[index] = challengeOption[index].replace("%3E",'>');
 
-                /* Insert it to manual challenges table */
-                options.challenges.push({info: challengeOption[index]});
-            }
-
-            /* Set manual challenges to be played */
-            globals.storage = globals.storage + "-manual";
-            options.level   = 0;
+            /* Insert it to manual challenges table */
+            options.challenges.push({info: challengeOption[index]});
         }
+
+        /* Set manual challenges to be played */
+        globals.storage = globals.storage + "-manual";
+        options.level   = 0;
     }
 }
 
@@ -4405,12 +4418,6 @@ function modalPointerDown(event) {
 
     modalHide();
     modalDropClick = true;
-
-    /* Game over hid board, show it and restart level */
-    if (elements.board.style.visibility == "hidden") {
-        elements.board.style.visibility = "visible";
-        gameStart(globals.game.level);
-    }
 }
 
 /* Drop click of closing tap, so buttons do not act */
@@ -4432,7 +4439,7 @@ document.addEventListener("click",       modalClick,       true);
  *****************************************************************************/
 function gameStart(level) {
     /* Check level value */
-    if (level == undefined || level < 0) {
+    if (level == undefined || isNaN(level) || level < 0) {
         level = 0;
     }
     if (level >= options.challenges.length) {
