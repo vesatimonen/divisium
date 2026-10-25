@@ -3,6 +3,11 @@
  * Button handlers
  *****************************************************************************/
 function uiUndo(event) {
+    /* Ignore during solve animation or modal */
+    if (uiInputBlocked()) {
+        return false;
+    }
+
     /* Make undo if possible */
     globals.game.undoMove()
 
@@ -11,6 +16,11 @@ function uiUndo(event) {
 }
 
 function uiRestart(event) {
+    /* Ignore during solve animation or modal */
+    if (uiInputBlocked()) {
+        return false;
+    }
+
     /* Undo all moves back */
     while (true) {
         if (globals.game.undoMove() == false) {

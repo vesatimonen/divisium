@@ -7,6 +7,7 @@ const globals = {
     boardMargin:  0.06, /* Room kept for margin when sizing cells, in cells */
     cellSize:     undefined,
     frameWidth:   undefined, /* Wall line, whole device pixels */
+    animating:    false, /* Solve animation running */
 };
 
 /*****************************************************************************

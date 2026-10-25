@@ -28,6 +28,11 @@ function uiMovePosition(event) {
  * Event handlers
  *****************************************************************************/
 function uiClick(event) {
+    /* Ignore during solve animation or modal */
+    if (uiInputBlocked()) {
+        return false;
+    }
+
     /* Get clock position */
     const move = uiMovePosition(event);
     const X = move.X;

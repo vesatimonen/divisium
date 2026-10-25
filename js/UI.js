@@ -13,7 +13,8 @@ const INK_COLOR = "#1C2B3A";
  * Redraw buttons
  *****************************************************************************/
 function uiButtonsRedraw(game) {
-    if (game.undoable()) {
+    /* Disabled when nothing to undo, or input blocked */
+    if (game.undoable() && !uiInputBlocked()) {
         elements.buttonUndo.disabled    = false;
         elements.buttonRestart.disabled = false;
     } else {
@@ -132,6 +133,11 @@ function uiBoardRedraw(board) {
     uiButtonsRedraw(globals.game);
 }
 
+/* No input during solve animation or while modal shows */
+function uiInputBlocked() {
+    return globals.animating || modalVisible();
+}
+
 
 /*****************************************************************************
  * Frame line width snapped to whole device pixels, at least 1
@@ -224,6 +230,7 @@ function uiBoardSetup(board) {
  *****************************************************************************/
 function uiGridAnimationEnd(event) {
     event.stopPropagation();
+    globals.animating = false;
 
     if (globals.game.level + 1 >= options.challenges.length) {
         /* Show game over modal */
@@ -245,11 +252,13 @@ function uiRedraw() {
 
     /* Check if end of level */
     if (globals.game.board.solved()) {
-        /* Start animation */
+        /* Start animation to next level, block input and gray buttons */
+        globals.animating = true;
+        uiButtonsRedraw(globals.game);
         elements.board.addEventListener("animationend", uiGridAnimationEnd);
         elements.board.style.animation = "none";
         elements.board.offsetHeight; /* trigger reflow */
-        elements.board.style.animation = "image-appear 0.5s ease-in 0.2s 1 reverse";
+        elements.board.style.animation = "image-appear 1.0s ease-in 0.4s 1 reverse"; /* 2x slower */
     }
 }
 
