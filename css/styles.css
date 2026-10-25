@@ -90,6 +90,8 @@ body {
     position:       relative;
 
     margin-top:     6px;
+    margin-left:    auto; /* Center in screen, leftover pixels split evenly */
+    margin-right:   auto;
 
     border-radius:  4px;
 

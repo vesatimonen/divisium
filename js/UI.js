@@ -1,7 +1,8 @@
 /*****************************************************************************
  * Canvas element sizes, part of cell size
  *****************************************************************************/
-const FRAME_WIDTH = 0.04; /* Walls and grid frame */
+const FRAME_WIDTH     = 0.04; /* Walls and grid frame */
+const FRAME_MIN_WIDTH = 2; /* Thinnest wall in CSS px, small screens */
 
 /*****************************************************************************
  * Canvas colors
@@ -167,7 +168,8 @@ function uiInputBlocked() {
  *****************************************************************************/
 function uiFrameWidth(cellSize) {
     const pixelRatio  = window.devicePixelRatio || 1;
-    const framePixels = Math.max(1, Math.round(FRAME_WIDTH * cellSize * pixelRatio));
+    const frameWidth  = Math.max(FRAME_WIDTH * cellSize, FRAME_MIN_WIDTH);
+    const framePixels = Math.max(1, Math.round(frameWidth * pixelRatio));
 
     return framePixels / pixelRatio;
 }
@@ -217,9 +219,8 @@ function uiBoardSetup(board) {
     /* Margin as padding so canvas covers outer walls */
     elements.board.style.padding = uiBoardMargin() + "px";
 
-    /* Center the board */
+    /* Board width, CSS auto margins center it */
     elements.board.style.width = globals.cellSize * board.width + "px";
-    elements.board.style.left  = Math.floor((globals.cellSize * (globals.boardMaxSize - board.width)) / 2) + "px";
 
     /* Create grid and add cells */
     for (let y = 0; y < board.height; y++) {
