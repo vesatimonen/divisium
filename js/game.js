@@ -182,7 +182,8 @@ class Board {
     /* Initialize game */
     init(info) {
         /* Parse board configuration */
-        var boardInfo   = info.split(/[>$#]/)[1];
+        const infoSplit = info.split(/[>$#]/);
+        var boardInfo   = infoSplit[infoSplit.length - 1]; /* Part after '>', or all if no prefix */
         this.width      = parseInt(boardInfo.substr(0,1));
         this.height     = parseInt(boardInfo.substr(2,1));
         this.targetSum  = parseInt(boardInfo.split('=')[1]);
