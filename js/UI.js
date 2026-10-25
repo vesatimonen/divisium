@@ -115,8 +115,8 @@ function uiElementsRedraw(board) {
 
 function uiBoardRedraw(board) {
     /* Redraw cell content */
-    for (y = 0; y < board.height; y++) {
-        for (x = 0; x < board.width; x++) {
+    for (let y = 0; y < board.height; y++) {
+        for (let x = 0; x < board.width; x++) {
             /* Redraw item image */
             uiCellRedraw(board, x ,y);
         }
@@ -190,16 +190,16 @@ function uiBoardSetup(board) {
 
     /* Center the board */
     elements.board.style.width = globals.cellSize * board.width + "px";
-    elements.board.style.left  = Math.floor((globals.cellSize * (9 - board.width)) / 2) + "px";
+    elements.board.style.left  = Math.floor((globals.cellSize * (globals.boardMaxSize - board.width)) / 2) + "px";
 
     /* Create grid and add cells */
-    for (y = 0; y < board.height; y++) {
+    for (let y = 0; y < board.height; y++) {
         /* Create row */
         let newRow = document.createElement("div");
         newRow.className = "grid-row";
         elements.grid.appendChild(newRow);
 
-        for (x = 0; x < board.width; x++) {
+        for (let x = 0; x < board.width; x++) {
             /* Create cell */
             let newCell = document.createElement("div");
             newCell.className    = "grid-cell";

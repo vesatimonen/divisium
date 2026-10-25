@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Global variables
  *****************************************************************************/
-var globals = {
+const globals = {
     game:         undefined,
     boardMaxSize: 9,
     boardMargin:  0.06, /* Room kept for margin when sizing cells, in cells */
@@ -12,7 +12,7 @@ var globals = {
 /*****************************************************************************
  * URL options
  *****************************************************************************/
-var options = {
+const options = {
     challenges: [],
     level:      0
 };

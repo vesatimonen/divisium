@@ -29,17 +29,17 @@ function uiMovePosition(event) {
  *****************************************************************************/
 function uiClick(event) {
     /* Get clock position */
-    move = uiMovePosition(event);
-    X = move.X;
-    Y = move.Y;
+    const move = uiMovePosition(event);
+    const X = move.X;
+    const Y = move.Y;
 
     /* Closest wall */
-    Xwall = Math.round(X);
-    Ywall = Math.round(Y);
+    const Xwall = Math.round(X);
+    const Ywall = Math.round(Y);
 
     /* Current cell */
-    Xcell = Math.floor(X);
-    Ycell = Math.floor(Y);
+    const Xcell = Math.floor(X);
+    const Ycell = Math.floor(Y);
 
     /* Check limits */
     if (Ycell < 0 || Ycell >= globals.game.board.height ||
@@ -48,8 +48,8 @@ function uiClick(event) {
     }
 
     /* Direction from wall */
-    Xdelta = Math.abs(X - Xwall);
-    Ydelta = Math.abs(Y - Ywall);
+    const Xdelta = Math.abs(X - Xwall);
+    const Ydelta = Math.abs(Y - Ywall);
     if (Xdelta < Ydelta) {
         if (Ydelta - Xdelta > 0.0) {
             /* Vertical wall */

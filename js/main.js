@@ -2,7 +2,7 @@
 /*****************************************************************************
  * Game levels
  *****************************************************************************/
-var defaultChallengeSet = [
+const defaultChallengeSet = [
     {info: "INFO: V04-02-00-02-01 C00-00-06 D0000 T000001 E010 S00.000 #3x3=4-103130400"},
     {info: "INFO: V02-03-03-01-00 C00-00-06 D0000 T000001 E006 S00.026 #3x3=4-013012221"},
     {info: "INFO: V03-02-03-00-01 C00-00-06 D0000 T000001 E009 S00.000 #3x3=4-210210204"},
@@ -53,7 +53,7 @@ var defaultChallengeSet = [
     {info: "INFO: V16-33-21-11-00 C05-16-85 D0103200000000031000000000000 T001162 E109 S00.011 #9x9=4-121102031112122120211213102112210130112022131122201030110310321031213111220310013"},
 ];
 
-var debugChallengeSet = [
+const debugChallengeSet = [
     {info: "INFO: V20-29-19-11-02 C00-00-90 D0000000000000000000000000000 T000001 E135 S00.947 #9x9=4-312431322110003120011020003130321021201000130133143112221101122110102221122211101"},
     {info: "INFO: V21-26-23-08-03 C00-00-90 D0000000000000000000000000000 T000001 E136 S00.943 #9x9=4-321021400102122102021100423222032111021110130221100410210121203031103113211202202"},
     {info: "INFO: V21-28-19-10-03 C00-00-90 D0000000000000000000000000000 T000001 E143 S00.894 #9x9=4-211113102311212210003032012011001030022332101410120321112440020220012313111211012"},
@@ -4317,11 +4317,11 @@ var debugChallengeSet = [
 /*****************************************************************************
  * Parse URL options
  *****************************************************************************/
-var level_option = undefined;
-var set_option   = undefined;
+let level_option = undefined;
+let set_option   = undefined;
 function parseOptions() {
     /* Replace special characters in url */
-    var newUrl = window.location.href;
+    let newUrl = window.location.href;
     newUrl = newUrl.replace("%23", '#'); /* Replace "%23" -> '#' */
     newUrl = newUrl.replace('#', '>');   /* '#' -> '>' */
     newUrl = newUrl.replace("%3E", '>'); /* Replace "%3E" -> '>' */
@@ -4339,7 +4339,7 @@ function parseOptions() {
     }
 
     /* Challenge option */
-    var challengeOption = url.searchParams.getAll("challenge");
+    const challengeOption = url.searchParams.getAll("challenge");
     if (challengeOption.length == 0) {
     } else {
         if (challengeOption.length > 0) {
@@ -4397,7 +4397,7 @@ function gameStart(level) {
 
     /* Debug text */
     if (options.challenges == debugChallengeSet) {
-        elements.debug.innerHTML = options.challenges[level].info.split("#")[0];
+        elements.debug.textContent = options.challenges[level].info.split("#")[0];
     }
 
     /* Setup board */
