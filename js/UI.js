@@ -72,6 +72,7 @@ function uiElementsRedraw(board) {
     /* Draw walls */
     context.beginPath();
     context.lineWidth = WALL_WIDTH * globals.cellSize;
+    context.lineCap = "round"; /* Smooth wall ends and corners */
     context.strokeStyle = "#202020";
 
     /* Draw vertical walls */
