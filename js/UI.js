@@ -1,8 +1,8 @@
 /*****************************************************************************
  * Canvas element sizes, part of cell size
  *****************************************************************************/
-const FRAME_WIDTH     = 0.04; /* Walls and grid frame */
-const FRAME_MIN_WIDTH = 2; /* Thinnest wall in CSS px, small screens */
+const FRAME_WIDTH     = 0.057; /* Walls and grid frame, 4px at biggest 70px cell */
+const FRAME_MIN_WIDTH = 3; /* Thinnest wall in CSS px, small screens */
 
 /*****************************************************************************
  * Canvas colors
