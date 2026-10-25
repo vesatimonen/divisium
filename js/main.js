@@ -4346,7 +4346,18 @@ function parseOptions() {
     }
     if (levelOption == null) {
         /* Read from storage */
-        options.level = JSON.parse(localStorage.getItem(globals.storage));
+        try {
+            const saved = JSON.parse(localStorage.getItem(globals.storage));
+
+            if (typeof saved == "number") {
+                options.level = saved; /* Old save, level only */
+            } else if (saved != null) {
+                options.level = saved.level;
+                options.saved = saved;
+            }
+        } catch (error) {
+            options.level = 0; /* Bad or blocked storage */
+        }
     } else {
         options.level = Number(levelOption - 1);
     }
@@ -4435,6 +4446,68 @@ document.addEventListener("click",       modalClick,       true);
 
 
 /*****************************************************************************
+ * Save and restore game
+ *****************************************************************************/
+/* Save level, challenge and moves, so reload keeps board */
+function gameSave() {
+    const game = globals.game;
+    const saved = {
+        level:     game.level,
+        challenge: options.challenges[game.level].info,
+        moves:     game.moves
+    };
+
+    try {
+        localStorage.setItem(globals.storage, JSON.stringify(saved));
+    } catch (error) {
+        /* Storage blocked, skip save */
+    }
+}
+
+/* Inner wall on board, same limits as tap, frame never toggles */
+function gameMoveValid(board, move) {
+    if (move == null || !Number.isInteger(move.x) || !Number.isInteger(move.y)) {
+        return false;
+    }
+
+    if (move.direction == "vertical") {
+        return move.x > 0 && move.x < board.width && move.y >= 0 && move.y < board.height;
+    }
+    if (move.direction == "horizontal") {
+        return move.x >= 0 && move.x < board.width && move.y > 0 && move.y < board.height;
+    }
+    return false;
+}
+
+function gameRestore() {
+    const game  = globals.game;
+    const saved = options.saved;
+
+    /* No save, or save for other challenge */
+    if (saved == undefined ||
+        saved.level != game.level ||
+        saved.challenge != options.challenges[game.level].info ||
+        !Array.isArray(saved.moves)) {
+        return;
+    }
+
+    /* Replay in order, rebuilds board and undo history */
+    for (let index = 0; index < saved.moves.length; index++) {
+        const move = saved.moves[index];
+
+        /* Skip broken move */
+        if (!gameMoveValid(game.board, move)) {
+            continue;
+        }
+
+        game.makeMove(move.direction, move.x, move.y);
+    }
+
+    uiRedraw();
+}
+
+
+/*****************************************************************************
  * Game initialization
  *****************************************************************************/
 function gameStart(level) {
@@ -4451,7 +4524,7 @@ function gameStart(level) {
     globals.game.init(level, options.challenges[level].info);
 
     /* Save game point */
-    localStorage.setItem(globals.storage, JSON.stringify(globals.game.level));
+    gameSave();
 
     /* Debug text */
     if (options.challenges == debugChallengeSet) {
@@ -4474,6 +4547,9 @@ window.onload = function () {
     /* Start game */
     globals.game = new Game();
     gameStart(options.level);
+
+    /* Put back saved board */
+    gameRestore();
 
     /* Show window */
     elements.screen.style.visibility = "visible";
