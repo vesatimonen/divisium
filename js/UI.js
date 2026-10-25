@@ -1,4 +1,8 @@
-
+/*****************************************************************************
+ * Canvas element sizes, part of cell size
+ *****************************************************************************/
+const DOT_RADIUS = 0.04; /* Corner dot */
+const WALL_WIDTH = 0.04; /* Room walls */
 
 /*****************************************************************************
  * Redraw buttons
@@ -56,20 +60,18 @@ function uiElementsRedraw(board) {
     context.scale(pixelRatio, pixelRatio);
 
     /* Draw dots */
-    var dotRadius = 3;
     for (let y = 0; y <= board.height; y++) {
         for (let x = 0; x <= board.width; x++) {
             context.beginPath();
-            context.arc(globals.cellSize * x, globals.cellSize * y, dotRadius, 0, 2 * Math.PI, false);
+            context.arc(globals.cellSize * x, globals.cellSize * y, DOT_RADIUS * globals.cellSize, 0, 2 * Math.PI, false);
             context.fillStyle = "#202020";
             context.fill();
         }
     }
 
     /* Draw walls */
-    var lineWidth = 3;
     context.beginPath();
-    context.lineWidth = lineWidth;
+    context.lineWidth = WALL_WIDTH * globals.cellSize;
     context.strokeStyle = "#202020";
 
     /* Draw vertical walls */
