@@ -2,7 +2,13 @@
 :root {
     --game-screen-max-width: 640px;
     --game-screen-min-width: 320px;
+    --ink-color:             #1C2B3A; /* Same as INK_COLOR in UI.js */
     --frame-width:           2px; /* Set from FRAME_WIDTH in UI.js */
+}
+
+/*** Text color for whole page ***/
+body {
+    color:          var(--ink-color);
 }
 
 /*** Global default style ***/
@@ -76,7 +82,7 @@
     text-align:         center;
 
     background-color:   #67BFEC;
-    border:             var(--frame-width) solid #202020;
+    border:             var(--frame-width) solid var(--ink-color);
     border-radius:      8px;
 
 
@@ -137,9 +143,9 @@
     display:        block;
 
     /* Appearance */
-    color:          #000000;
+    color:          var(--ink-color);
     background:     #67BFEC;
-    border:         var(--frame-width) solid #202020;
+    border:         var(--frame-width) solid var(--ink-color);
     border-radius:  16px;
     outline:        0;
 

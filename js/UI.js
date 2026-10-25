@@ -4,6 +4,12 @@
 const FRAME_WIDTH = 0.04; /* Walls and grid frame */
 
 /*****************************************************************************
+ * Canvas colors
+ *****************************************************************************/
+/* Dark color for walls, dots and text */
+const INK_COLOR = "#1C2B3A";
+
+/*****************************************************************************
  * Redraw buttons
  *****************************************************************************/
 function uiButtonsRedraw(game) {
@@ -72,7 +78,7 @@ function uiElementsRedraw(board) {
         for (let x = 0; x <= board.width; x++) {
             context.beginPath();
             context.arc(globals.cellSize * x, globals.cellSize * y, globals.frameWidth, 0, 2 * Math.PI, false); /* Dot twice line width */
-            context.fillStyle = "#202020";
+            context.fillStyle = INK_COLOR;
             context.fill();
         }
     }
@@ -81,7 +87,7 @@ function uiElementsRedraw(board) {
     context.beginPath();
     context.lineWidth = globals.frameWidth; /* Snapped to device pixels, sharp */
     context.lineCap = "round"; /* Smooth wall ends and corners */
-    context.strokeStyle = "#202020";
+    context.strokeStyle = INK_COLOR;
 
     /* Draw vertical walls */
     for (let x = 0; x < board.width + 1; x++) {
