@@ -2,6 +2,7 @@
 :root {
     --game-screen-max-width: 640px;
     --game-screen-min-width: 320px;
+    --frame-width:           2px; /* Set from FRAME_WIDTH in UI.js */
 }
 
 /*** Global default style ***/
@@ -79,7 +80,7 @@
     text-align:         center;
 
     background-color:   #67BFEC;
-    border:             2px solid #202020;
+    border:             var(--frame-width) solid #202020;
     border-radius:      8px;
 
 
@@ -136,7 +137,7 @@
     /* Appearance */
     color:          #000000;
     background:     #67BFEC;
-    border:         2px solid #202020;
+    border:         var(--frame-width) solid #202020;
     border-radius:  16px;
     outline:        0;
 

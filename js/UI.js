@@ -59,6 +59,11 @@ function uiElementsRedraw(board) {
     elements.canvas.height = Math.round(canvasRect.height * pixelRatio);
     context.scale(pixelRatio, pixelRatio);
 
+    /* Odd width lines move half pixel to sit on whole pixels, dots follow lines */
+    context.save();
+    const lineShift = uiLineShift(globals.frameWidth);
+    context.translate(lineShift, lineShift);
+
     /* Draw dots */
     for (let y = 0; y <= board.height; y++) {
         for (let x = 0; x <= board.width; x++) {
@@ -68,11 +73,6 @@ function uiElementsRedraw(board) {
             context.fill();
         }
     }
-
-    /* Odd width lines move half pixel to sit on whole pixels */
-    context.save();
-    const lineShift = uiLineShift(globals.frameWidth);
-    context.translate(lineShift, lineShift);
 
     /* Draw walls */
     context.beginPath();
@@ -159,6 +159,9 @@ function uiBoardSetup(board) {
 
     /* Walls use whole device pixels */
     globals.frameWidth = uiFrameWidth(globals.cellSize);
+
+    /* Modal and buttons use same line as walls */
+    document.documentElement.style.setProperty("--frame-width", globals.frameWidth + "px");
 
     /* Clear elements in board */
     while (elements.grid.firstChild) {
