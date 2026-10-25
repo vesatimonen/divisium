@@ -57,8 +57,8 @@ function uiElementsRedraw(board) {
 
     /* Draw dots */
     var dotRadius = 3;
-    for (y = 0; y <= board.height; y++) {
-        for (x = 0; x <= board.width; x++) {
+    for (let y = 0; y <= board.height; y++) {
+        for (let x = 0; x <= board.width; x++) {
             context.beginPath();
             context.arc(globals.cellSize * x, globals.cellSize * y, dotRadius, 0, 2 * Math.PI, false);
             context.fillStyle = "#202020";
