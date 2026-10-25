@@ -4,6 +4,10 @@
 const FRAME_WIDTH     = 0.057; /* Walls and grid frame, 4px at biggest 70px cell */
 const FRAME_MIN_WIDTH = 3; /* Thinnest wall in CSS px, small screens */
 
+/* Button border like dottium, its grid frame width */
+const BUTTON_WIDTH = 0.04;  /* Part of dottium cell */
+const BUTTON_CELLS = 8.65;  /* Dottium screen width in cells */
+
 /*****************************************************************************
  * Canvas colors
  *****************************************************************************/
@@ -176,6 +180,18 @@ function uiFrameWidth(cellSize) {
 
 
 /*****************************************************************************
+ * Button border width, same math as dottium frame
+ *****************************************************************************/
+function uiButtonWidth() {
+    const pixelRatio  = window.devicePixelRatio || 1;
+    const cellSize    = Math.floor(elements.screen.clientWidth / BUTTON_CELLS);
+    const framePixels = Math.max(1, Math.round(BUTTON_WIDTH * cellSize * pixelRatio));
+
+    return framePixels / pixelRatio;
+}
+
+
+/*****************************************************************************
  * Half device pixel shift for odd width lines, else zero
  *****************************************************************************/
 function uiLineShift(lineWidth) {
@@ -208,8 +224,11 @@ function uiBoardSetup(board) {
     /* Walls use whole device pixels */
     globals.frameWidth = uiFrameWidth(globals.cellSize);
 
-    /* Modal and buttons use same line as walls */
+    /* Modal uses same line as walls */
     document.documentElement.style.setProperty("--frame-width", globals.frameWidth + "px");
+
+    /* Buttons use dottium line width */
+    document.documentElement.style.setProperty("--button-width", uiButtonWidth() + "px");
 
     /* Clear elements in board */
     while (elements.grid.firstChild) {

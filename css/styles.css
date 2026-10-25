@@ -21,6 +21,7 @@
     --game-screen-min-width: 320px;
     --ink-color:             #1C2B3A; /* Same as INK_COLOR in UI.js */
     --frame-width:           2px; /* Set from FRAME_WIDTH in UI.js */
+    --button-width:          2px; /* Set from BUTTON_WIDTH in UI.js, same as dottium */
 }
 
 /*** Text color for whole page ***/
@@ -181,7 +182,7 @@ body {
     /* Appearance */
     color:          var(--ink-color);
     background:     #67BFEC;
-    border:         var(--frame-width) solid var(--ink-color);
+    border:         var(--button-width) solid var(--ink-color);
     border-radius:  16px;
     outline:        0;
 
