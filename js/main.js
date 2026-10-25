@@ -4465,8 +4465,8 @@ function gameStart(level) {
 
 
 window.onload = function () {
-    options.challenges = debugChallengeSet;
-    globals.storage = "divisium-4/game-level";
+    options.challenges = defaultChallengeSet;
+    globals.storage = "divisium/game-level";
 
     /* Parse options */
     parseOptions();
