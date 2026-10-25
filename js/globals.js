@@ -26,9 +26,12 @@ const elements = {
     grid:           document.getElementById("game-grid"),
 
     canvas:         document.getElementById('game-canvas'),
-    gameOver:       document.getElementById("game-over-modal"),
+    modal:          document.getElementById("game-modal"),
+    modalTitle:     document.getElementById("modal-title"),
+    modalText:      document.getElementById("modal-text"),
     buttonRestart:  document.getElementById("button-restart"),
     buttonUndo:     document.getElementById("button-undo"),
+    buttonAbout:    document.getElementById("button-about"),
 
     debug:          document.getElementById("debug-text")
 };

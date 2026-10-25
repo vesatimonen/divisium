@@ -43,10 +43,29 @@ body {
 #game-title {
     margin-top:     10px;
 
+    position:       relative; /* For about button */
+
     font-size:      36px;
     font-weight:    bold;
 
     text-align:     center;
+}
+
+#button-about {
+    position:       absolute;
+    right:          4px;
+    top:            50%;
+    transform:      translateY(-50%);
+
+    width:          34px;
+    height:         34px;
+    border-radius:  50%;
+}
+
+#button-about svg {
+    width:          22px;
+    height:         22px;
+    stroke-width:   3;
 }
 
 
@@ -70,7 +89,7 @@ body {
 }
 
 
-#game-over-modal {
+#game-modal {
     visibility:         hidden;
 
     position:           absolute;
@@ -85,6 +104,7 @@ body {
     border:             var(--frame-width) solid var(--ink-color);
     border-radius:      8px;
 
+    white-space:        nowrap; /* Keep size, do not squeeze near edge */
 
     line-height: 100%;
     margin: auto;
@@ -93,6 +113,17 @@ body {
     top:                50%;
     left:               50%;
     transform:          translate(-50%, -50%);
+}
+
+/* Small second line, hidden when empty */
+#modal-text {
+    margin-top:         8px;
+    font-size:          20px;
+    font-weight:        normal;
+}
+
+#modal-text:empty {
+    display:            none;
 }
 
 #game-canvas {
@@ -191,14 +222,6 @@ body {
     margin-top:     10px;
 
     font-size:      18px;
-    text-align:     center;
-}
-
-/*** Game copyright ***/
-#game-copyright {
-    margin-top:     10px;
-
-    font-size:      12px;
     text-align:     center;
 }
 

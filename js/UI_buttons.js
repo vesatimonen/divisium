@@ -59,6 +59,13 @@ elements.buttonRestart.addEventListener("mousedown",  uiMouseDown);
 elements.buttonRestart.addEventListener("touchend",   uiMouseUp);
 elements.buttonRestart.addEventListener("touchstart", uiMouseDown, {passive: true});
 
+/* ABOUT, show in modal, tap anywhere closes */
+function uiAbout(event) {
+    modalShow("DIVISIUM", "© Vesa Timonen", false);
+}
+
+elements.buttonAbout.addEventListener("click", uiAbout);
+
 function preventZoom(event) {
     /* Disable double click zoom */
     event.preventDefault();

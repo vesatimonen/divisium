@@ -20,13 +20,16 @@
         <!-- TITLE -->
         <div id="game-title">
             DIVISIUM
+            <button id="button-about" class="button" aria-label="About"><svg viewBox="0 0 24 24"><path d="M12 11v7"/><path d="M12 6.5v0.01"/></svg></button>
         </div>
 
 
         <!-- GAME BOARD -->
         <div id="game-board">
-            <div id="game-over-modal">
-                Game&nbsp;solved!
+            <!-- Modal for game over and about, tap anywhere closes -->
+            <div id="game-modal">
+                <div id="modal-title"></div>
+                <div id="modal-text"></div>
             </div>
             <canvas id="game-canvas"></canvas>
             <div id="game-grid">
@@ -43,11 +46,6 @@
         <!-- INSTRUCTIONS -->
         <div id="game-instructions">
             Divide the grid into 3-cell regions, so that the digits in each region <b>sum to <span id="divisium-sum">4</span></b>. The solution is unique.
-        </div>
-
-        <!-- COPYRIGHT -->
-        <div id="game-copyright">
-            &copy; vesa.timonen at kolumbus.fi
         </div>
 
         <div id="debug-text"></div>

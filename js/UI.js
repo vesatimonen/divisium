@@ -227,7 +227,7 @@ function uiGridAnimationEnd(event) {
 
     if (globals.game.level + 1 >= options.challenges.length) {
         /* Show game over modal */
-        elements.gameOver.style.visibility = "visible";
+        modalShow("Game solved!", "", false);
         elements.board.style.visibility = "hidden";
     }
 
