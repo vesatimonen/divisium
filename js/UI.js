@@ -59,6 +59,10 @@ function uiElementsRedraw(board) {
     elements.canvas.height = Math.round(canvasRect.height * pixelRatio);
     context.scale(pixelRatio, pixelRatio);
 
+    /* Grid 0,0 after margin */
+    const margin = Math.round(globals.cellSize * globals.boardMargin);
+    context.translate(margin, margin);
+
     /* Odd width lines move half pixel to sit on whole pixels, dots follow lines */
     context.save();
     const lineShift = uiLineShift(globals.frameWidth);
@@ -154,8 +158,8 @@ function uiLineShift(lineWidth) {
  *****************************************************************************/
 function uiBoardSetup(board) {
 
-    /* Calculate board grid size */
-    globals.cellSize = Math.floor((elements.screen.clientWidth) / globals.boardMaxSize); /* 9 = Maximum board X-size */
+    /* Calculate board grid size, margin on both sides takes room too */
+    globals.cellSize = Math.floor((elements.screen.clientWidth) / (globals.boardMaxSize + 2 * globals.boardMargin));
 
     /* Walls use whole device pixels */
     globals.frameWidth = uiFrameWidth(globals.cellSize);
@@ -167,6 +171,9 @@ function uiBoardSetup(board) {
     while (elements.grid.firstChild) {
         elements.grid.removeChild(elements.grid.firstChild);
     }
+
+    /* Margin as padding so canvas covers outer walls */
+    elements.board.style.padding = Math.round(globals.cellSize * globals.boardMargin) + "px";
 
     /* Center the board */
     elements.board.style.width = globals.cellSize * board.width + "px";
