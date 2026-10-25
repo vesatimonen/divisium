@@ -4,7 +4,7 @@
 var globals = {
     game:         undefined,
     boardMaxSize: 9,
-    boardMargin:  0.05, /* Room for outer walls and corner dots, in cells */
+    boardMargin:  0.06, /* Room kept for margin when sizing cells, in cells */
     cellSize:     undefined,
     frameWidth:   undefined, /* Wall line, whole device pixels */
 };

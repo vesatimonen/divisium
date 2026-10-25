@@ -1,7 +1,6 @@
 /*****************************************************************************
  * Canvas element sizes, part of cell size
  *****************************************************************************/
-const DOT_RADIUS = 0.04; /* Corner dot */
 const FRAME_WIDTH = 0.04; /* Walls and grid frame */
 
 /*****************************************************************************
@@ -60,7 +59,7 @@ function uiElementsRedraw(board) {
     context.scale(pixelRatio, pixelRatio);
 
     /* Grid 0,0 after margin */
-    const margin = Math.round(globals.cellSize * globals.boardMargin);
+    const margin = uiBoardMargin();
     context.translate(margin, margin);
 
     /* Odd width lines move half pixel to sit on whole pixels, dots follow lines */
@@ -72,7 +71,7 @@ function uiElementsRedraw(board) {
     for (let y = 0; y <= board.height; y++) {
         for (let x = 0; x <= board.width; x++) {
             context.beginPath();
-            context.arc(globals.cellSize * x, globals.cellSize * y, DOT_RADIUS * globals.cellSize, 0, 2 * Math.PI, false);
+            context.arc(globals.cellSize * x, globals.cellSize * y, globals.frameWidth, 0, 2 * Math.PI, false); /* Dot twice line width */
             context.fillStyle = "#202020";
             context.fill();
         }
@@ -154,6 +153,14 @@ function uiLineShift(lineWidth) {
 
 
 /*****************************************************************************
+ * Margin around grid in whole pixels, fits corner dot and line shift
+ *****************************************************************************/
+function uiBoardMargin() {
+    return Math.ceil(globals.frameWidth + uiLineShift(globals.frameWidth));
+}
+
+
+/*****************************************************************************
  * Setup board elements
  *****************************************************************************/
 function uiBoardSetup(board) {
@@ -173,7 +180,7 @@ function uiBoardSetup(board) {
     }
 
     /* Margin as padding so canvas covers outer walls */
-    elements.board.style.padding = Math.round(globals.cellSize * globals.boardMargin) + "px";
+    elements.board.style.padding = uiBoardMargin() + "px";
 
     /* Center the board */
     elements.board.style.width = globals.cellSize * board.width + "px";
