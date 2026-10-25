@@ -50,9 +50,9 @@ function uiCellRedraw(board, x, y) {
 
 /* Draw cell digits, empty when zero, same baseline shift as dottium hints */
 function uiValuesDraw(context, board) {
-    const fontYShift = 0.28 * globals.cellSize; /* 0.4 of font size, Oswald digit middle */
+    const fontYShift = 0.3 * globals.cellSize; /* 0.4 of font size, Oswald digit middle */
 
-    context.font      = (0.7 * globals.cellSize) + "px Oswald, sans-serif";
+    context.font      = (0.75 * globals.cellSize) + "px Oswald, sans-serif"; /* Same as SVG, 6 of 8 */
     context.fillStyle = INK_COLOR;
     context.textAlign = "center";
 
@@ -236,8 +236,6 @@ function uiBoardSetup(board) {
 
             newCell.style.width      = globals.cellSize + "px";
             newCell.style.height     = globals.cellSize + "px";
-            newCell.style.lineHeight = globals.cellSize + "px"; /* Center text vertically */
-            newCell.style.textAlign  = "center";
 
             newRow.appendChild(newCell);
 

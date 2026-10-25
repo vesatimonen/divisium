@@ -96,15 +96,7 @@ body {
     touch-action:   none; /* Disable all including double-tap zoom */
     touch-action:   pinch-zoom;
 
-    font-size:      calc(0.08 * var(--game-screen-max-width)); /* 8vm of max-width */
-
-    font-family:    'Oswald', sans-serif;
-}
-
-@media screen and (max-width: 640px) {
-    #game-board {
-        font-size:      8vw;
-    }
+    font-family:    'Oswald', sans-serif; /* Modal text */
 }
 
 
@@ -168,8 +160,6 @@ body {
 .grid-cell {
     margin:         0 auto;
     float:          left;
-
-    font-family:    'Oswald', sans-serif;
 
     background:     none;
 }
