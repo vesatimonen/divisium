@@ -16,7 +16,9 @@ const globals = {
 const options = {
     challenges: [],
     level:      0,
-    saved:      undefined /* Saved game from storage */
+    saved:      undefined, /* Saved game from storage */
+    language:   "ENG",
+    gameOverText: "Game solved!" /* Changed by language */
 };
 
 /*****************************************************************************
@@ -34,6 +36,7 @@ const elements = {
     buttonRestart:  document.getElementById("button-restart"),
     buttonUndo:     document.getElementById("button-undo"),
     buttonAbout:    document.getElementById("button-about"),
+    instructions:   document.getElementById("game-instructions"),
 
     debug:          document.getElementById("debug-text")
 };

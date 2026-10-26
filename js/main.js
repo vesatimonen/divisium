@@ -4375,6 +4375,17 @@ function parseOptions() {
         globals.storage = globals.storage + "-manual";
         options.level   = 0;
     }
+
+    const languageOption = url.searchParams.get("language");
+    if (languageOption != null) {
+        switch (languageOption) {
+            case "FIN":
+                options.language = languageOption;
+                elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen <b>numeroiden summa on <span id=\"divisium-sum\">4</span></b>. Ratkaisuja on vain yksi.";
+                options.gameOverText            = "Peli ratkaistu!";
+                break;
+        }
+    }
 }
 
 
