@@ -7,14 +7,6 @@
     src:            url('../fonts/oswald-latin-400-normal.woff2') format('woff2');
 }
 
-@font-face {
-    font-family:    'Oswald';
-    font-style:     normal;
-    font-weight:    700;
-    font-display:   swap;
-    src:            url('../fonts/oswald-latin-700-normal.woff2') format('woff2');
-}
-
 
 :root {
     --game-screen-max-width: 640px;
@@ -98,8 +90,6 @@ body {
 
     touch-action:   none; /* Disable all including double-tap zoom, drag paints walls */
 /*    touch-action:   pinch-zoom; */
-
-    font-family:    'Oswald', sans-serif; /* Modal text */
 }
 
 
