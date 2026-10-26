@@ -4381,7 +4381,7 @@ function parseOptions() {
         switch (languageOption) {
             case "FIN":
                 options.language = languageOption;
-                elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen <b>numeroiden summa on <span id=\"divisium-sum\">4</span></b>. Ratkaisuja on vain yksi.";
+                elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen numeroiden summa on <span id=\"divisium-sum\">3</span>. Ratkaisuja on vain yksi.";
                 options.gameOverText            = "Peli ratkaistu!";
                 break;
         }
@@ -4525,8 +4525,10 @@ function gameStart(level) {
     }
 
     /* Initialize game */
-    document.getElementById("divisium-sum").innerHTML = "4";
     globals.game.init(level, options.challenges[level].info);
+
+    /* Instructions show this challenge sum */
+    document.getElementById("divisium-sum").textContent = globals.game.board.targetSum;
 
     /* Save game point */
     gameSave();
