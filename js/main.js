@@ -51,8 +51,6 @@ const defaultChallengeSet = [
 /*****************************************************************************
  * Parse URL options
  *****************************************************************************/
-let level_option = undefined;
-let set_option   = undefined;
 function parseOptions() {
     /* Replace special characters in url */
     let newUrl = window.location.href;
