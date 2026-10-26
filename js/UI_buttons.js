@@ -34,26 +34,6 @@ function uiRestart(event) {
     return false;
 }
 
-var restartTimer;
-function uiMouseUp(event) {
-    clearInterval(restartTimer);
-    return false;
-}
-
-function uiMouseDown(event) {
-    restartTimer = setInterval(
-                        function() {
-                            if (globals.game.level == 0) {
-                                clearInterval(restartTimer);
-                            } else {
-                                gameStart(globals.game.level - 1);
-                            }
-                        },
-                        500);
-    return false;
-}
-
-
 
 /*****************************************************************************
  * Register button event handlers
@@ -62,12 +42,7 @@ function uiMouseDown(event) {
 elements.buttonUndo.addEventListener("click", uiUndo);
 
 /* RESTART */
-elements.buttonRestart.addEventListener("click",      uiRestart);
-elements.buttonRestart.addEventListener("mouseup",    uiMouseUp);
-elements.buttonRestart.addEventListener("mouseleave", uiMouseUp);
-elements.buttonRestart.addEventListener("mousedown",  uiMouseDown);
-elements.buttonRestart.addEventListener("touchend",   uiMouseUp);
-elements.buttonRestart.addEventListener("touchstart", uiMouseDown, {passive: true});
+elements.buttonRestart.addEventListener("click", uiRestart);
 
 /* ABOUT, show in modal, tap anywhere closes */
 function uiAbout(event) {
