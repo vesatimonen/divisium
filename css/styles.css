@@ -9,7 +9,8 @@
 
 
 :root {
-    --game-screen-max-width: 640px;
+    --game-screen-widest:    720px; /* Widest screen, uiFrameBlend reads it */
+    --game-screen-max-width: min(var(--game-screen-widest), calc(100svh - 120px)); /* Board fits in height, 120px for title and buttons */
     --game-screen-min-width: 320px;
     --ink-color:             #1C2B3A; /* Same as INK_COLOR in UI.js */
     --frame-width:           2px; /* Set from FRAME_WIDTH in UI.js */

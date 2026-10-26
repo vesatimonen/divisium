@@ -171,11 +171,11 @@ function uiInputBlocked() {
  * Frame width moves evenly from min to max as cell grows
  *****************************************************************************/
 function uiFrameBlend(cellSize) {
-    /* Smallest and biggest cell, from screen min and max width in CSS */
+    /* Smallest and biggest cell, from screen min and widest width in CSS */
     const style    = getComputedStyle(document.documentElement);
     const cells    = globals.boardMaxSize + 2 * globals.boardMargin;
     const minCell  = Math.floor(parseFloat(style.getPropertyValue("--game-screen-min-width")) / cells);
-    const maxCell  = Math.floor(parseFloat(style.getPropertyValue("--game-screen-max-width")) / cells);
+    const maxCell  = Math.floor(parseFloat(style.getPropertyValue("--game-screen-widest")) / cells);
 
     let part = (cellSize - minCell) / (maxCell - minCell);
 
