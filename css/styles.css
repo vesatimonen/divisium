@@ -13,7 +13,6 @@
     --game-screen-max-width: min(var(--game-screen-widest), calc(100svh - 144px)); /* Board fits in height, 144px for title and buttons at max scale */
     --game-screen-min-width: 320px;
     --ink-color:             #1C2B3A; /* Same as INK_COLOR in UI.js */
-    --frame-width:           2px; /* Set from uiFrameWidth in UI.js */
     --button-width:          2px; /* Set from BUTTON_WIDTH in UI.js, same as dottium */
     --element-scale:         1;   /* Set from cell size in UI.js */
 }

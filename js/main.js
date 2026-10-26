@@ -102,9 +102,6 @@ function parseOptions() {
     if (challengeOption.length > 0) {
         options.challenges = [];
         for (let index = 0; index < challengeOption.length; index++) {
-            /* Convert URL special characters */
-            challengeOption[index] = challengeOption[index].replace("%3E",'>');
-
             /* Insert it to manual challenges table */
             options.challenges.push({info: challengeOption[index]});
         }
