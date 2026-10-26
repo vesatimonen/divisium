@@ -199,7 +199,7 @@ function uiPointerDown(event) {
     paintDragging = false;
 
     /* Keep getting moves outside page until release */
-    elements.screen.setPointerCapture(event.pointerId);
+    document.documentElement.setPointerCapture(event.pointerId);
 
     if (paintValue != undefined) {
         uiRedraw();
@@ -248,10 +248,10 @@ function uiTouchStart(event) {
     event.preventDefault();
 }
 
-/* Whole page listens, paint can start outside board */
-elements.screen.addEventListener("pointerdown",   uiPointerDown);
-elements.screen.addEventListener("pointermove",   uiPointerMove);
-elements.screen.addEventListener("pointerup",     uiPointerUp);
-elements.screen.addEventListener("pointercancel", uiPointerUp);
-elements.screen.addEventListener("lostpointercapture", uiPointerUp); /* Release outside window */
+/* Whole window listens, paint can start outside board */
+document.documentElement.addEventListener("pointerdown",   uiPointerDown);
+document.documentElement.addEventListener("pointermove",   uiPointerMove);
+document.documentElement.addEventListener("pointerup",     uiPointerUp);
+document.documentElement.addEventListener("pointercancel", uiPointerUp);
+document.documentElement.addEventListener("lostpointercapture", uiPointerUp); /* Release outside window */
 elements.board.addEventListener("touchstart",    uiTouchStart, {passive: false});

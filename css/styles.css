@@ -23,6 +23,11 @@ body {
     color:          var(--ink-color);
 }
 
+/*** Drag paints anywhere in window, no zoom or scroll by touch ***/
+html {
+    touch-action:   none;
+}
+
 /*** Global default style ***/
 * {
     /* Prevent text selection */
@@ -48,8 +53,6 @@ body {
     margin-right:       auto;
 
     background-color:   #B0DDFF; /* #92D2F2, #B0DDFF*/
-
-    touch-action:       none; /* Drag paints anywhere, no zoom or scroll by touch */
 
     visibility:         hidden; /* Show after load */
 }
