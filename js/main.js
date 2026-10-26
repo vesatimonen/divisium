@@ -51,6 +51,20 @@ const defaultChallengeSet = [
 /*****************************************************************************
  * Parse URL options
  *****************************************************************************/
+/* Board part like 3x3=4-103130400, sizes 1-9, one digit per cell, cells in threes */
+function challengeValid(info) {
+    const infoSplit = info.split(/[>$#]/);
+    const boardInfo = infoSplit[infoSplit.length - 1].trim();
+    const match     = boardInfo.match(/^([1-9])x([1-9])=([1-9][0-9]*)-([0-9]+)$/);
+
+    if (match == null) {
+        return false;
+    }
+
+    const cells = Number(match[1]) * Number(match[2]);
+    return match[4].length == cells && cells % 3 == 0;
+}
+
 function parseOptions() {
     /* Replace special characters in url */
     let newUrl = window.location.href;
@@ -99,14 +113,17 @@ function parseOptions() {
     if (challengeOption.length == 0) {
         challengeOption = url.searchParams.getAll("challenge");
     }
-    if (challengeOption.length > 0) {
-        options.challenges = [];
-        for (let index = 0; index < challengeOption.length; index++) {
-            /* Insert it to manual challenges table */
-            options.challenges.push({info: challengeOption[index]});
+    /* Keep only valid challenges */
+    const manualChallenges = [];
+    for (let index = 0; index < challengeOption.length; index++) {
+        if (challengeValid(challengeOption[index])) {
+            manualChallenges.push({info: challengeOption[index]});
         }
+    }
 
-        /* Set manual challenges to be played */
+    /* Set manual challenges to be played, all bad keeps default set */
+    if (manualChallenges.length > 0) {
+        options.challenges = manualChallenges;
         globals.storage = globals.storage + "-manual";
         options.level   = 0;
     }
