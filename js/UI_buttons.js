@@ -75,10 +75,3 @@ function uiAbout(event) {
 }
 
 elements.buttonAbout.addEventListener("click", uiAbout);
-
-function preventZoom(event) {
-    /* Disable double click zoom */
-    event.preventDefault();
-}
-
-elements.screen.addEventListener("click", preventZoom);
