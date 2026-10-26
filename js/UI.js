@@ -36,8 +36,7 @@ function uiButtonsRedraw(game) {
  * Redraw level elements
  *****************************************************************************/
 function uiInfoRedraw(game) {
-    let gameInfo = document.getElementById("game-info");
-    gameInfo.innerHTML = "L" + (game.level + 1) + "/" + options.challenges.length;
+    elements.info.textContent = "L" + (game.level + 1) + "/" + options.challenges.length;
 }
 
 /*****************************************************************************
