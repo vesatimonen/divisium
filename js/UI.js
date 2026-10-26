@@ -1,8 +1,8 @@
 /*****************************************************************************
  * Canvas element sizes
  *****************************************************************************/
-const FRAME_MIN_WIDTH = 2;  /* Walls at smallest cell, CSS px */
-const FRAME_MAX_WIDTH = 3;  /* Walls at biggest cell, CSS px */
+const FRAME_MIN_WIDTH = 3;  /* Walls at smallest cell, CSS px */
+const FRAME_MAX_WIDTH = 4;  /* Walls at biggest cell, CSS px */
 
 /* Button border like dottium, its grid frame width */
 const BUTTON_WIDTH = 0.04;  /* Part of dottium cell */
