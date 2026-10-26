@@ -13,7 +13,7 @@
     --game-screen-max-width: min(var(--game-screen-widest), calc(100svh - 144px)); /* Board fits in height, 144px for title and buttons at max scale */
     --game-screen-min-width: 320px;
     --ink-color:             #1C2B3A; /* Same as INK_COLOR in UI.js */
-    --frame-width:           2px; /* Set from FRAME_WIDTH in UI.js */
+    --frame-width:           2px; /* Set from uiFrameWidth in UI.js */
     --button-width:          2px; /* Set from BUTTON_WIDTH in UI.js, same as dottium */
     --element-scale:         1;   /* Set from cell size in UI.js */
 }
@@ -68,6 +68,7 @@ html {
     text-align:     center;
 }
 
+/*** About button, small round i at right end of title ***/
 #button-about {
     position:       absolute;
     right:          4px;
@@ -100,14 +101,15 @@ html {
 }
 
 
+/*** Modal for game over and about, in middle of board ***/
 #game-modal {
     visibility:         hidden;
 
     position:           absolute;
     z-index:            1;
 
-    padding:            10px;
-    font-size:          24px;
+    padding:            14px; /* Grows with text */
+    font-size:          32px;
     font-weight:        bold;
     text-align:         center;
 
@@ -195,6 +197,7 @@ html {
 /*    box-shadow:         3px 3px 5px rgb(0,0,0); */
 }
 
+/* Restart and undo icons, drawn in ink color */
 .button svg {
     display:        block;
     margin:         auto;

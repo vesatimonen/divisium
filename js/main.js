@@ -128,7 +128,7 @@ function parseOptions() {
 
 
 /*****************************************************************************
- * Modal window handling (Game over)
+ * Modal window handling (game over and about)
  *****************************************************************************/
 /* Tap that closed modal, its click is not used */
 let modalDropClick = false;
