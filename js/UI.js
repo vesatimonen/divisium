@@ -1,8 +1,8 @@
 /*****************************************************************************
- * Canvas element sizes, part of cell size
+ * Canvas element sizes
  *****************************************************************************/
-const FRAME_WIDTH     = 0.057; /* Walls and grid frame, 4px at biggest 70px cell */
-const FRAME_MIN_WIDTH = 3; /* Thinnest wall in CSS px, small screens */
+const FRAME_MIN_WIDTH = 2;  /* Walls at smallest cell, CSS px */
+const FRAME_MAX_WIDTH = 3;  /* Walls at biggest cell, CSS px */
 
 /* Button border like dottium, its grid frame width */
 const BUTTON_WIDTH = 0.04;  /* Part of dottium cell */
@@ -168,11 +168,30 @@ function uiInputBlocked() {
 
 
 /*****************************************************************************
+ * Frame width moves evenly from min to max as cell grows
+ *****************************************************************************/
+function uiFrameBlend(cellSize) {
+    /* Smallest and biggest cell, from screen min and max width in CSS */
+    const style    = getComputedStyle(document.documentElement);
+    const cells    = globals.boardMaxSize + 2 * globals.boardMargin;
+    const minCell  = Math.floor(parseFloat(style.getPropertyValue("--game-screen-min-width")) / cells);
+    const maxCell  = Math.floor(parseFloat(style.getPropertyValue("--game-screen-max-width")) / cells);
+
+    let part = (cellSize - minCell) / (maxCell - minCell);
+
+    /* Stay inside min and max */
+    part = Math.min(Math.max(part, 0), 1);
+
+    return FRAME_MIN_WIDTH + (FRAME_MAX_WIDTH - FRAME_MIN_WIDTH) * part;
+}
+
+
+/*****************************************************************************
  * Frame line width snapped to whole device pixels, at least 1
  *****************************************************************************/
 function uiFrameWidth(cellSize) {
     const pixelRatio  = window.devicePixelRatio || 1;
-    const frameWidth  = Math.max(FRAME_WIDTH * cellSize, FRAME_MIN_WIDTH);
+    const frameWidth  = uiFrameBlend(cellSize);
     const framePixels = Math.max(1, Math.round(frameWidth * pixelRatio));
 
     return framePixels / pixelRatio;
