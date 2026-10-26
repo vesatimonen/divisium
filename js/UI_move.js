@@ -28,7 +28,10 @@ function uiMovePosition(event) {
 /*****************************************************************************
  * Event handlers
  *****************************************************************************/
-/* Wall value being painted, undefined when not painting */
+/* Painting on, from press to release */
+let paintActive = false;
+
+/* Wall value being painted, undefined until first wall when press is outside board */
 let paintValue = undefined;
 
 /* Last pointer point while painting, in cells */
@@ -68,6 +71,12 @@ function uiPaintWall(direction, x, y) {
     /* Already painted */
     if (value == paintValue) {
         return false;
+    }
+
+    /* First wall decides value when press was outside board */
+    if (paintValue == undefined) {
+        paintValue = globals.game.makeMove(direction, x, y);
+        return true;
     }
 
     globals.game.makeMove(direction, x, y);
@@ -142,6 +151,11 @@ function uiPointerDown(event) {
         return false;
     }
 
+    /* Buttons keep their own taps */
+    if (event.target.closest("button")) {
+        return false;
+    }
+
     /* Get press position */
     const move = uiMovePosition(event);
     const X = move.X;
@@ -155,32 +169,27 @@ function uiPointerDown(event) {
     const Xcell = Math.floor(X);
     const Ycell = Math.floor(Y);
 
-    /* Check limits */
-    if (Ycell < 0 || Ycell >= globals.game.board.height ||
-        Xcell < 0 || Xcell >= globals.game.board.width) {
-        return false;
-    }
-
-    /* Toggle wall like a tap, its new value is used for painting */
+    /* Inside board, toggle wall like a tap, its new value is used for painting */
     paintValue = undefined;
-    const Xdelta = Math.abs(X - Xwall);
-    const Ydelta = Math.abs(Y - Ywall);
-    if (Xdelta < Ydelta) {
-        /* Vertical wall */
-        if (Xwall > 0 && Xwall < globals.game.board.width) {
-            paintValue = globals.game.makeMove("vertical", Xwall, Ycell);
-        }
-    } else {
-        /* Horizontal wall */
-        if (Ywall > 0 && Ywall < globals.game.board.height) {
-            paintValue = globals.game.makeMove("horizontal", Xcell, Ywall);
+    if (Ycell >= 0 && Ycell < globals.game.board.height &&
+        Xcell >= 0 && Xcell < globals.game.board.width) {
+        const Xdelta = Math.abs(X - Xwall);
+        const Ydelta = Math.abs(Y - Ywall);
+        if (Xdelta < Ydelta) {
+            /* Vertical wall */
+            if (Xwall > 0 && Xwall < globals.game.board.width) {
+                paintValue = globals.game.makeMove("vertical", Xwall, Ycell);
+            }
+        } else {
+            /* Horizontal wall */
+            if (Ywall > 0 && Ywall < globals.game.board.height) {
+                paintValue = globals.game.makeMove("horizontal", Xcell, Ywall);
+            }
         }
     }
 
-    /* Frame tap, nothing to paint */
-    if (paintValue == undefined) {
-        return false;
-    }
+    /* Outside board or frame, first wall crossed sets value */
+    paintActive = true;
 
     /* Remember press point for drag threshold */
     paintStartX = X;
@@ -189,21 +198,23 @@ function uiPointerDown(event) {
     paintLastY  = Y;
     paintDragging = false;
 
-    /* Keep getting moves outside board until release */
-    elements.board.setPointerCapture(event.pointerId);
+    /* Keep getting moves outside page until release */
+    elements.screen.setPointerCapture(event.pointerId);
 
-    uiRedraw();
+    if (paintValue != undefined) {
+        uiRedraw();
+    }
 }
 
 function uiPointerMove(event) {
     /* Not painting, solve animation running or modal */
-    if (paintValue == undefined || uiInputBlocked()) {
+    if (!paintActive || uiInputBlocked()) {
         return false;
     }
 
     /* Button released where we did not see it, stop painting */
     if (event.buttons == 0) {
-        paintValue = undefined;
+        paintActive = false;
         return false;
     }
 
@@ -229,7 +240,7 @@ function uiPointerMove(event) {
 
 function uiPointerUp(event) {
     /* Stop painting */
-    paintValue = undefined;
+    paintActive = false;
 }
 
 /* Stop iOS magnifier and page scroll on board, modal closes on pointerdown */
@@ -237,9 +248,10 @@ function uiTouchStart(event) {
     event.preventDefault();
 }
 
-elements.board.addEventListener("pointerdown",   uiPointerDown);
-elements.board.addEventListener("pointermove",   uiPointerMove);
-elements.board.addEventListener("pointerup",     uiPointerUp);
-elements.board.addEventListener("pointercancel", uiPointerUp);
-elements.board.addEventListener("lostpointercapture", uiPointerUp); /* Release outside window */
+/* Whole page listens, paint can start outside board */
+elements.screen.addEventListener("pointerdown",   uiPointerDown);
+elements.screen.addEventListener("pointermove",   uiPointerMove);
+elements.screen.addEventListener("pointerup",     uiPointerUp);
+elements.screen.addEventListener("pointercancel", uiPointerUp);
+elements.screen.addEventListener("lostpointercapture", uiPointerUp); /* Release outside window */
 elements.board.addEventListener("touchstart",    uiTouchStart, {passive: false});
