@@ -8,6 +8,10 @@ const FRAME_MAX_WIDTH = 3;  /* Walls at biggest cell, CSS px */
 const BUTTON_WIDTH = 0.04;  /* Part of dottium cell */
 const BUTTON_CELLS = 8.65;  /* Dottium screen width in cells */
 
+/* Title, buttons, info and instructions grow with board */
+const ELEMENT_SCALE_BASE_CELL = 47;  /* Cell size where scale is 1, same screen as dottium 50 */
+const ELEMENT_SCALE_MAX       = 1.3; /* Biggest scale */
+
 /*****************************************************************************
  * Canvas colors
  *****************************************************************************/
@@ -168,6 +172,22 @@ function uiInputBlocked() {
 
 
 /*****************************************************************************
+ * Scale for page elements, 1 at base cell, at most max
+ *****************************************************************************/
+function uiElementScale(cellSize) {
+    const scale = cellSize / ELEMENT_SCALE_BASE_CELL;
+
+    if (scale < 1) {
+        return 1;
+    }
+    if (scale > ELEMENT_SCALE_MAX) {
+        return ELEMENT_SCALE_MAX;
+    }
+    return scale;
+}
+
+
+/*****************************************************************************
  * Frame width moves evenly from min to max as cell grows
  *****************************************************************************/
 function uiFrameBlend(cellSize) {
@@ -248,6 +268,9 @@ function uiBoardSetup(board) {
 
     /* Buttons and modal use dottium line width */
     document.documentElement.style.setProperty("--button-width", uiButtonWidth() + "px");
+
+    /* Title, buttons, info and instructions grow with board */
+    document.documentElement.style.setProperty("--element-scale", uiElementScale(globals.cellSize));
 
     /* Clear elements in board */
     while (elements.grid.firstChild) {
