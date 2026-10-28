@@ -43,7 +43,7 @@ elements.buttonRestart.addEventListener("click", uiRestart);
 
 /* ABOUT, show in modal, tap anywhere closes */
 function uiAbout(event) {
-    modalShow("DIVISIUM", "© Vesa Timonen", false);
+    modalShow("DIVISIUM", "© vesa.timonen[at]kolumbus.fi", false);
 }
 
 elements.buttonAbout.addEventListener("click", uiAbout);
