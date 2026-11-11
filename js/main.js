@@ -137,6 +137,11 @@ function parseOptions() {
                 elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen numeroiden summa on <span id=\"divisium-sum\">3</span>. Ratkaisuja on vain yksi.";
                 options.gameOverText            = "Peli ratkaistu!";
                 break;
+            case "SWE":
+                options.language = languageOption;
+                elements.instructions.innerHTML = "Dela in rutnätet i områden med tre rutor så att siffrorna i varje område har summan <span id=\"divisium-sum\">3</span>. Lösningen är unik.";
+                options.gameOverText            = "Spelet löst!";
+                break;
         }
     }
 }
