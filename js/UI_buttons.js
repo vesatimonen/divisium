@@ -41,9 +41,34 @@ elements.buttonUndo.addEventListener("click", uiUndo);
 /* RESTART */
 elements.buttonRestart.addEventListener("click", uiRestart);
 
+/* Controls help, action and result */
+const ABOUT_HELP = [
+    ["Click",            "Set or clear wall"],
+    ["Drag",             "Set or clear walls"]
+];
+
+/* Build help grid, dashes line up in middle column */
+function uiAboutHelp() {
+    const help = document.createElement("div");
+    help.className = "modal-help";
+
+    for (const [action, result] of ABOUT_HELP) {
+        for (const part of [action, "–", result]) {
+            const cell = document.createElement("span");
+            cell.textContent = part;
+            help.appendChild(cell);
+        }
+    }
+    return help;
+}
+
 /* ABOUT, show in modal, tap anywhere closes */
 function uiAbout(event) {
-    modalShow("DIVISIUM", "© vesa.timonen[at]kolumbus.fi", false);
+    const text = "No ads, no tracking. Progress is saved only on this device.\n" +
+                 "\n" +
+                 "©\u00A0vesa.timonen[at]kolumbus.fi";
+    modalShow("DIVISIUM", text, false);
+    elements.modalText.prepend(uiAboutHelp()); /* modalShow clears it next time */
 }
 
 elements.buttonAbout.addEventListener("click", uiAbout);
