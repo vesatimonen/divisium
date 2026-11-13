@@ -7,6 +7,7 @@ const FRAME_MAX_WIDTH = 4;  /* Walls at biggest cell, CSS px */
 /* Button border like dottium, its grid frame width */
 const BUTTON_WIDTH = 0.04;  /* Part of dottium cell */
 const BUTTON_CELLS = 8.65;  /* Dottium screen width in cells */
+const BUTTON_MAX_WIDTH = 1.7; /* Max in CSS px, as dottium */
 
 /* Title, buttons, info and instructions grow with board */
 const ELEMENT_SCALE_BASE_CELL = 47;  /* Cell size where scale is 1, same screen as dottium 50 */
@@ -228,7 +229,8 @@ function uiFrameWidth(cellSize) {
 function uiButtonWidth() {
     const pixelRatio  = window.devicePixelRatio || 1;
     const cellSize    = Math.floor(elements.screen.clientWidth / BUTTON_CELLS);
-    const framePixels = Math.max(1, Math.round(BUTTON_WIDTH * cellSize * pixelRatio));
+    const buttonWidth = Math.min(BUTTON_WIDTH * cellSize, BUTTON_MAX_WIDTH);
+    const framePixels = Math.max(1, Math.round(buttonWidth * pixelRatio));
 
     return framePixels / pixelRatio;
 }
