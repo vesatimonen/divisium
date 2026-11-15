@@ -151,8 +151,8 @@ function uiPointerDown(event) {
         return false;
     }
 
-    /* Buttons keep their own taps */
-    if (event.target.closest("button")) {
+    /* Buttons and level arrows keep their own taps */
+    if (event.target.closest("button, .level-arrow")) {
         return false;
     }
 

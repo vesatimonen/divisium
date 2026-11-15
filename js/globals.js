@@ -18,6 +18,7 @@ const options = {
     level:      0,
     debug:      false, /* Debug set from ?s=debug */
     saved:      undefined, /* Saved game from storage */
+    reached:    0,         /* Furthest level > may go to, solved + 1 */
     language:   "ENG",
     gameOverText: "Game solved!" /* Changed by language */
 };

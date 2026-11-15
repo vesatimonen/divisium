@@ -91,19 +91,22 @@ function parseOptions() {
     if (levelOption == null) {
         levelOption = url.searchParams.get("level");
     }
-    if (levelOption == null) {
-        /* Read from storage */
-        try {
-            const saved = JSON.parse(localStorage.getItem(globals.storage));
 
-            if (typeof saved == "number") {
-                options.level = saved; /* Old save, level only */
-            } else if (saved != null) {
-                options.level = saved.level;
-                options.saved = saved;
-            }
-        } catch (error) {
-            options.level = 0; /* Bad or blocked storage */
+    /* Read from storage, ?l= link keeps reached level */
+    let saved = null;
+    try {
+        saved = JSON.parse(localStorage.getItem(globals.storage));
+    } catch (error) {
+        saved = null; /* Bad or blocked storage */
+    }
+    options.reached = savedReachedGet(saved);
+
+    if (levelOption == null) {
+        if (typeof saved == "number") {
+            options.level = saved; /* Old save, level only */
+        } else if (saved != null) {
+            options.level = saved.level;
+            options.saved = saved;
         }
     } else {
         options.level = Number(levelOption - 1);
@@ -211,13 +214,31 @@ document.addEventListener("click",       modalClick,       true);
 /*****************************************************************************
  * Save and restore game
  *****************************************************************************/
-/* Save level, challenge and moves, so reload keeps board */
+/* Furthest level > may go to, old save has none, its level is it */
+function savedReachedGet(saved) {
+    if (typeof saved == "number" && Number.isInteger(saved)) {
+        return saved; /* Old save, level only */
+    }
+    if (saved == null || typeof saved != "object") {
+        return 0;
+    }
+    if (Number.isInteger(saved.reached)) {
+        return saved.reached;
+    }
+    if (Number.isInteger(saved.level)) {
+        return saved.level;
+    }
+    return 0;
+}
+
+/* Save level, challenge, moves and reached level, so reload keeps board */
 function gameSave() {
     const game = globals.game;
     const saved = {
         level:     game.level,
         challenge: options.challenges[game.level].info,
-        moves:     game.moves
+        moves:     game.moves,
+        reached:   options.reached
     };
 
     try {
@@ -280,6 +301,11 @@ function gameStart(level) {
     }
     if (level >= options.challenges.length) {
         level = options.challenges.length - 1;
+    }
+
+    /* Started level counts as reached, like ?l= link */
+    if (level > options.reached) {
+        options.reached = level;
     }
 
     /* Initialize game */
