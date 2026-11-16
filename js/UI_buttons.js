@@ -110,8 +110,23 @@ function uiShareLevelText(solved, count) {
     return solved + "/" + count + " solved. Try Divisium too!\n";
 }
 
+/* Manual share text, link has board part of each challenge, "=" encoded */
+function uiShareManualText() {
+    const params = [];
+
+    for (const challenge of options.challenges) {
+        const parts = challenge.info.split(/[>$#]/);
+        params.push("c=" + encodeURIComponent(parts[parts.length - 1].trim()));
+    }
+    return "Can you solve this Divisium puzzle?\n" + SHARE_URL + "?" + params.join("&");
+}
+
 /* Share text, progress and link */
 function uiShareText() {
+    if (options.manual) {
+        return uiShareManualText();
+    }
+
     const count  = options.challenges.length;
     const solved = Math.min(options.reached, count);
 
