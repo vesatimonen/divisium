@@ -196,6 +196,12 @@ function modalPointerDown(event) {
         return;
     }
 
+    /* Share works over modal, like after solve */
+    if (elements.buttonShare.contains(event.target)) {
+        modalDropClick = false;
+        return;
+    }
+
     event.preventDefault();
     event.stopPropagation(); /* Keep tap off the board */
 

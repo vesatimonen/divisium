@@ -118,7 +118,12 @@ function uiShareManualText() {
         const parts = challenge.info.split(/[>$#]/);
         params.push("c=" + encodeURIComponent(parts[parts.length - 1].trim()));
     }
-    return "Can you solve this Divisium puzzle?\n" + SHARE_URL + "?" + params.join("&");
+    /* Solved board on screen, not save, all manual links share one save */
+    let text = "Can you solve this Divisium puzzle?\n";
+    if (globals.game.board.solved()) {
+        text = "I solved this Divisium puzzle. Can you?\n";
+    }
+    return text + SHARE_URL + "?" + params.join("&");
 }
 
 /* Share text, progress and link */
