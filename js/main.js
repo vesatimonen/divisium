@@ -128,8 +128,14 @@ function parseOptions() {
     /* Set manual challenges to be played, all bad keeps default set */
     if (manualChallenges.length > 0) {
         options.challenges = manualChallenges;
+        options.manual  = true;
         globals.storage = globals.storage + "-manual";
         options.level   = 0;
+    }
+
+    /* Share only real sets, not debug or manual */
+    if (options.debug || options.manual) {
+        elements.buttonShare.style.display = "none";
     }
 
     const languageOption = url.searchParams.get("language");

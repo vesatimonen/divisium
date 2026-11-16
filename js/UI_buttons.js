@@ -95,3 +95,54 @@ function uiAbout(event) {
 }
 
 elements.buttonAbout.addEventListener("click", uiAbout);
+
+/* Main page, shared link has no level */
+const SHARE_URL = "https://divisium.app/";
+
+/* Share text, solved level count */
+function uiShareLevelText(solved, count) {
+    if (solved == 0) {
+        return "Try Divisium!\n";
+    }
+    if (solved == count) {
+        return "All " + count + " levels solved! 🎉\nTry Divisium too!\n";
+    }
+    return solved + "/" + count + " solved. Try Divisium too!\n";
+}
+
+/* Share text, progress and link */
+function uiShareText() {
+    const count  = options.challenges.length;
+    const solved = Math.min(options.reached, count);
+
+    return uiShareLevelText(solved, count) + SHARE_URL;
+}
+
+/* Copy text, modal shows what was copied */
+function uiShareCopy(text) {
+    if (navigator.clipboard == undefined) {
+        modalShow("SHARE", text, false);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(
+        function () { modalShow("COPIED", text, false); },
+        function () { modalShow("SHARE", text, false); });
+}
+
+/* SHARE, phone share sheet, else copy */
+function uiShare(event) {
+    const text = uiShareText();
+
+    if (navigator.share == undefined) {
+        uiShareCopy(text);
+        return;
+    }
+    navigator.share({text: text}).catch(function (error) {
+        /* Cancel is fine, other errors copy */
+        if (error.name != "AbortError") {
+            uiShareCopy(text);
+        }
+    });
+}
+
+elements.buttonShare.addEventListener("click", uiShare);

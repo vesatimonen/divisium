@@ -17,6 +17,7 @@ const options = {
     challenges: [],
     level:      0,
     debug:      false, /* Debug set from ?s=debug */
+    manual:     false, /* Manual challenges from ?c= */
     saved:      undefined, /* Saved game from storage */
     reached:    0,         /* Furthest level > may go to, solved + 1 */
     language:   "ENG",
@@ -38,6 +39,7 @@ const elements = {
     buttonRestart:  document.getElementById("button-restart"),
     buttonUndo:     document.getElementById("button-undo"),
     buttonAbout:    document.getElementById("button-about"),
+    buttonShare:    document.getElementById("button-share"),
     info:           document.getElementById("game-info"),
     instructions:   document.getElementById("game-instructions"),
 
