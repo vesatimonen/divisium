@@ -50,3 +50,4 @@ build/
 *.tmp
 5.txt
 
+test/

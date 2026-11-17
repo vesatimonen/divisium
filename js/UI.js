@@ -284,9 +284,34 @@ function uiBoardMargin() {
 
 
 /*****************************************************************************
- * Setup board elements
+ * Setup board, shrink screen until page fits in window height
  *****************************************************************************/
 function uiBoardSetup(board) {
+    /* Start from CSS width, so window grow gives room back */
+    elements.screen.style.maxWidth = "";
+    uiBoardBuild(board);
+
+    /* Shrink at least one px per cell, so cell size drops */
+    const cellsAcross = globals.boardMaxSize + 2 * globals.boardMargin;
+
+    /* Few tries, each shrinks by overflow */
+    for (let tryIndex = 0; tryIndex < 4; tryIndex++) {
+        const overflow = document.documentElement.scrollHeight - window.innerHeight;
+        if (overflow <= 0) {
+            return;
+        }
+
+        const shrink = Math.ceil(Math.max(overflow, cellsAcross));
+        elements.screen.style.maxWidth = (elements.screen.clientWidth - shrink) + "px";
+        uiBoardBuild(board);
+    }
+}
+
+
+/*****************************************************************************
+ * Build board elements for current screen width
+ *****************************************************************************/
+function uiBoardBuild(board) {
 
     /* Calculate board grid size, margin on both sides takes room too */
     globals.cellSize = Math.floor((elements.screen.clientWidth) / (globals.boardMaxSize + 2 * globals.boardMargin));
