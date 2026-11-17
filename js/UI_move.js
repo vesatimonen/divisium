@@ -245,6 +245,10 @@ function uiPointerUp(event) {
 
 /* Stop iOS magnifier and page scroll on board, modal closes on pointerdown */
 function uiTouchStart(event) {
+    /* Share text keeps long press, select and copy */
+    if (event.target.closest(".share-text")) {
+        return;
+    }
     event.preventDefault();
 }
 

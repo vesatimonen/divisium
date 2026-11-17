@@ -185,6 +185,7 @@ function modalShow(title, text, fadeIn) {
 /* Hide modal, keep board and history, enable buttons again */
 function modalHide() {
     elements.modal.style.visibility = "hidden";
+    window.getSelection().removeAllRanges(); /* iOS keeps share text selection */
 
     uiButtonsRedraw(globals.game);
 }
@@ -198,6 +199,12 @@ function modalPointerDown(event) {
 
     /* Share works over modal, like after solve */
     if (elements.buttonShare.contains(event.target)) {
+        modalDropClick = false;
+        return;
+    }
+
+    /* Tap in share text selects, does not close */
+    if (event.target.closest(".share-text")) {
         modalDropClick = false;
         return;
     }
