@@ -357,8 +357,31 @@ function uiBoardBuild(board) {
         }
     }
 
+    /* Whole device pixels keep canvas crisp */
+    uiBoardSnap(0);
+
     /* Redraw board */
     uiBoardRedraw(board);
+}
+
+
+/*****************************************************************************
+ * Move board to whole device pixels, centering can give half pixels
+ *****************************************************************************/
+function uiBoardSnap(baseLeft) {
+    const pixelRatio = window.devicePixelRatio || 1;
+
+    /* Measure from base place, not from old shift */
+    elements.board.style.left = baseLeft + "px";
+    elements.board.style.top  = "0px";
+
+    /* Shift by rest to nearest device pixel */
+    const rect      = elements.canvas.getBoundingClientRect();
+    const shiftLeft = (Math.round(rect.left * pixelRatio) - rect.left * pixelRatio) / pixelRatio;
+    const shiftTop  = (Math.round(rect.top  * pixelRatio) - rect.top  * pixelRatio) / pixelRatio;
+
+    elements.board.style.left = (baseLeft + shiftLeft) + "px";
+    elements.board.style.top  = shiftTop + "px";
 }
 
 /*****************************************************************************
