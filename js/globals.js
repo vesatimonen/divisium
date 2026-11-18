@@ -30,22 +30,22 @@ const options = {
  * UI elements
  *****************************************************************************/
 const elements = {
-    screen:        document.getElementById("game-screen"),
-    board:         document.getElementById("game-board"),
-    grid:          document.getElementById("game-grid"),
+    screen:         document.getElementById("game-screen"),
+    board:          document.getElementById("game-board"),
+    grid:           document.getElementById("game-grid"),
 
-    canvas:        document.getElementById('game-canvas'),
-    modal:         document.getElementById("game-modal"),
-    modalTitle:    document.getElementById("modal-title"),
-    modalText:     document.getElementById("modal-text"),
-    buttonRestart: document.getElementById("button-restart"),
-    buttonUndo:    document.getElementById("button-undo"),
-    buttonAbout:   document.getElementById("button-about"),
-    buttonShare:   document.getElementById("button-share"),
-    info:          document.getElementById("game-info"),
-    instructions:  document.getElementById("game-instructions"),
+    canvas:         document.getElementById('game-canvas'),
+    modal:          document.getElementById("game-modal"),
+    modalTitle:     document.getElementById("modal-title"),
+    modalText:      document.getElementById("modal-text"),
+    buttonRestart:  document.getElementById("button-restart"),
+    buttonUndo:     document.getElementById("button-undo"),
+    buttonAbout:    document.getElementById("button-about"),
+    buttonShare:    document.getElementById("button-share"),
+    info:           document.getElementById("game-info"),
+    instructions:   document.getElementById("game-instructions"),
 
-    debug:         document.getElementById("debug-text")
+    debug:          document.getElementById("debug-text")
 };
 
 
