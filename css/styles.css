@@ -114,11 +114,11 @@ html {
 }
 
 
-/*** Modal for game over and about, in middle of board ***/
+/*** Modal for game over and about, in middle of screen ***/
 #game-modal {
     visibility:         hidden;
 
-    position:           absolute;
+    position:           fixed;
     z-index:            1;
 
     padding:            14px; /* Grows with text */
