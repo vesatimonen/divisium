@@ -144,17 +144,37 @@ function parseOptions() {
             case "FIN":
                 options.language = languageOption;
                 elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen numeroiden summa on <span id=\"divisium-sum\">3</span>. Ratkaisuja on vain yksi.";
-                options.gameOverText            = "Peli ratkaistu!";
+                options.gameOverText            = "Kaikki ratkaistu!";
+                options.gameOverLine            = "Ratkaisit kaikki {count} tehtävää.";
+                options.solvedText              = "Ratkaistu!";
                 break;
             case "SWE":
                 options.language = languageOption;
                 elements.instructions.innerHTML = "Dela in rutnätet i områden med tre rutor så att siffrorna i varje område har summan <span id=\"divisium-sum\">3</span>. Lösningen är unik.";
-                options.gameOverText            = "Spelet löst!";
+                options.gameOverText            = "Allt löst!";
+                options.gameOverLine            = "Du löste alla {count} pussel.";
+                options.solvedText              = "Löst!";
                 break;
         }
     }
 }
 
+
+/* Game over text, manual puzzle says solved */
+function gameOverTextGet() {
+    if (options.manual) {
+        return options.solvedText;
+    }
+    return options.gameOverText;
+}
+
+/* Small line under game over, solved count */
+function gameOverLineGet() {
+    if (options.manual) {
+        return "";
+    }
+    return options.gameOverLine.replace("{count}", options.challenges.length);
+}
 
 /*****************************************************************************
  * Modal window handling (game over and about)
@@ -398,7 +418,7 @@ window.onload = function () {
     }
 
     const script = document.createElement("script");
-    script.src    = "js/debug_set.js?v=4";
+    script.src    = "js/debug_set.js";
     script.onload = gameBoot;
     document.head.appendChild(script);
 }
