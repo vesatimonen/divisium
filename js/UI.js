@@ -388,7 +388,13 @@ function uiBoardSnap(baseLeft) {
  * Refresh board elements and check if game over
  *****************************************************************************/
 function uiGridAnimationEnd(event) {
+    /* Skip child animations, like modal fade in */
+    if (event.target != elements.board) {
+        return;
+    }
+
     event.stopPropagation();
+    elements.board.removeEventListener("animationend", uiGridAnimationEnd); /* One level change only */
     globals.animating = false;
 
     gameStart(globals.game.level + 1); /* Start new level */
