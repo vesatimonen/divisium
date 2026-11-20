@@ -144,16 +144,16 @@ function parseOptions() {
             case "FIN":
                 options.language = languageOption;
                 elements.instructions.innerHTML = "Jaa ruudukko kolmen ruudun kokoisiin alueisiin niin, että jokaisen alueen numeroiden summa on <span id=\"divisium-sum\">3</span>. Ratkaisuja on vain yksi.";
-                options.gameOverText            = "Kaikki ratkaistu!";
+                options.gameOverText            = "🏆 Kaikki ratkaistu! 🏆";
                 options.gameOverLine            = "Ratkaisit kaikki {count} tehtävää.";
-                options.solvedText              = "Ratkaistu!";
+                options.solvedText              = "⭐ Ratkaistu! ⭐";
                 break;
             case "SWE":
                 options.language = languageOption;
                 elements.instructions.innerHTML = "Dela in rutnätet i områden med tre rutor så att siffrorna i varje område har summan <span id=\"divisium-sum\">3</span>. Lösningen är unik.";
-                options.gameOverText            = "Allt löst!";
+                options.gameOverText            = "🏆 Allt löst! 🏆";
                 options.gameOverLine            = "Du löste alla {count} pussel.";
-                options.solvedText              = "Löst!";
+                options.solvedText              = "⭐ Löst! ⭐";
                 break;
         }
     }

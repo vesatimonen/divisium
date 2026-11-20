@@ -19,9 +19,9 @@ const options = {
     debug:        false,                             /* Debug set from ?s=debug */
     manual:       false,                             /* Manual challenges from ?c= */
     language:     "ENG",
-    gameOverText: "All solved!",                     /* Changed by language */
+    gameOverText: "🏆 All solved! 🏆",               /* Changed by language */
     gameOverLine: "You solved all {count} puzzles.", /* Under game over, {count} = levels */
-    solvedText:   "Solved!",                         /* Manual puzzle, game over text */
+    solvedText:   "⭐ Solved! ⭐",                   /* Manual puzzle, game over text */
     reached:      0,                                 /* Furthest level > may go to, solved + 1 */
     saved:        undefined                          /* Saved game from storage */
 };
